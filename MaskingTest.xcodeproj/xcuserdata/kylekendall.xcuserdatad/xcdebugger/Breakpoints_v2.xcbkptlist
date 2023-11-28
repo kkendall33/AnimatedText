@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "07871BFE-C633-4440-A3A7-E3E602A6ED98"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "16CA9F3B-6424-4C7B-9CC7-719D4D7C105A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MaskingTest/KLabel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "208"
+            endingLineNumber = "208"
+            landmarkName = "strokePath(text:context:closure:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "16CA9F3B-6424-4C7B-9CC7-719D4D7C105A - 728dd9cfcf93709d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MaskingTest.KLabel.strokePath(text: Swift.Optional&lt;Swift.String&gt;, context: __C.CGContextRef, closure: (__C.CGPathRef) -&gt; ()) -&gt; ()"
+                  moduleName = "MaskingTest"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kylekendall/Projects/MaskingTest/MaskingTest/KLabel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "208"
+                  endingLineNumber = "208"
+                  offsetFromSymbolStart = "1660">
+               </Location>
+               <Location
+                  uuid = "16CA9F3B-6424-4C7B-9CC7-719D4D7C105A - 728dd9cfcf93709d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MaskingTest.KLabel.strokePath(text: Swift.Optional&lt;Swift.String&gt;, context: __C.CGContextRef, closure: (__C.CGPathRef) -&gt; ()) -&gt; ()"
+                  moduleName = "MaskingTest"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kylekendall/Projects/MaskingTest/MaskingTest/KLabel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "208"
+                  endingLineNumber = "208"
+                  offsetFromSymbolStart = "1336">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "48F67379-C7E0-419A-A14D-0BE693114B1F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MaskingTest/KLabel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "212"
+            endingLineNumber = "212"
+            landmarkName = "strokePath(text:context:closure:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "48F67379-C7E0-419A-A14D-0BE693114B1F - 728dd9cfcf937f01"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MaskingTest.KLabel.strokePath(text: Swift.Optional&lt;Swift.String&gt;, context: __C.CGContextRef, closure: (__C.CGPathRef) -&gt; ()) -&gt; ()"
+                  moduleName = "MaskingTest"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kylekendall/Projects/MaskingTest/MaskingTest/KLabel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "212"
+                  endingLineNumber = "212"
+                  offsetFromSymbolStart = "2092">
+               </Location>
+               <Location
+                  uuid = "48F67379-C7E0-419A-A14D-0BE693114B1F - 728dd9cfcf937f01"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MaskingTest.KLabel.strokePath(text: Swift.Optional&lt;Swift.String&gt;, context: __C.CGContextRef, closure: (__C.CGPathRef) -&gt; ()) -&gt; ()"
+                  moduleName = "MaskingTest"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kylekendall/Projects/MaskingTest/MaskingTest/KLabel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "212"
+                  endingLineNumber = "212"
+                  offsetFromSymbolStart = "1768">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
