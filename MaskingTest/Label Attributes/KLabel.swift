@@ -78,7 +78,7 @@ class KLabel: UIView {
     }
     
     override func draw(_ layer: CALayer, in ctx: CGContext) {
-        super.draw(layer, in: ctx)
+//        super.draw(layer, in: ctx)
         print("draw layer ctx")
         ctx.scaleBy(x: 1.0, y: -1.0)
         let fontLineHeight = font.ascender - abs(font.descender)

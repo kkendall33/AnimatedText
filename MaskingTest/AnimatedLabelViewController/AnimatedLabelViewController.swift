@@ -47,6 +47,13 @@ class AnimatedLabelViewController: UIViewController {
         return playbackView
     }()
     
+    private lazy var granularitySegment: UISegmentedControl = {
+        let segmentedControl = UISegmentedControl(items: ["Character", "Word", "Full"])
+        segmentedControl.selectedSegmentIndex = 1 // Default selection to "Character"
+        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(_:)), for: .valueChanged)
+        return segmentedControl
+    }()
+    
     private var startTime: Date?
     private var pausedTime: TimeInterval?
     private var currentTime: TimeInterval = 0.0 {
@@ -58,7 +65,7 @@ class AnimatedLabelViewController: UIViewController {
     
     private let maxTime: TimeInterval = 120.0
     
-    private var displayText: String = "Bread" {
+    private var displayText: String = "REELS GOT RIZZ" {
         didSet {
             updateDisplayTextLabels()
         }
@@ -71,7 +78,7 @@ class AnimatedLabelViewController: UIViewController {
 //            .strokeColor : UIColor.red,
 //            .strokeWidth : -3.0,
             .foregroundColor: UIColor.black,
-            .font : UIFont(name: "Marion", size: 35)!
+            .font : UIFont(name: "AvenirNext-Regular", size: 35)!
         ])
         animatedLabel.attributedText = attr
         normalLabel.attributedText = attr
@@ -103,8 +110,10 @@ class AnimatedLabelViewController: UIViewController {
         verticalStackView.addArrangedSubview(textField)
         verticalStackView.addArrangedSubview(sliderView)
         verticalStackView.addArrangedSubview(playbackView)
+        verticalStackView.addArrangedSubview(granularitySegment)
         
         sliderView.totalDuration = maxTime
+        animatedLabel.animationDuration = maxTime
         
         configureLabel(label: animatedLabel)
         configureLabel(label: normalLabel)
@@ -166,9 +175,22 @@ class AnimatedLabelViewController: UIViewController {
     }
     
     private func currentTimeDidChange() {
+        animatedLabel.currentTime = self.currentTime
         sliderView.currentTime = self.currentTime
-        
         animatedLabel.neonOutlineRadius = oscillator.oscillate(timeInterval: currentTime)
+    }
+    
+    @objc private func segmentedControlValueChanged(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            animatedLabel.granularity = .character
+        case 1:
+            animatedLabel.granularity = .word
+        case 2:
+            animatedLabel.granularity = .full
+        default:
+            break
+        }
     }
     
 }

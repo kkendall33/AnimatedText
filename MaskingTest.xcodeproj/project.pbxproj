@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		99758EF42B23B9ED00839F99 /* TextAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99758EF32B23B9ED00839F99 /* TextAnimation.swift */; };
+		99758EF62B23BB7900839F99 /* WaveTextAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99758EF52B23BB7900839F99 /* WaveTextAnimation.swift */; };
+		99758EF82B23BBF300839F99 /* PopTextAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99758EF72B23BBF300839F99 /* PopTextAnimation.swift */; };
+		99758EFA2B23C5D300839F99 /* SpringOscillator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99758EF92B23C5D300839F99 /* SpringOscillator.swift */; };
+		99758EFC2B242D3F00839F99 /* FloatTextAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99758EFB2B242D3F00839F99 /* FloatTextAnimation.swift */; };
 		99BBBAFD2ADFC0B200706D17 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BBBAFC2ADFC0B200706D17 /* AppDelegate.swift */; };
 		99BBBAFF2ADFC0B200706D17 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BBBAFE2ADFC0B200706D17 /* SceneDelegate.swift */; };
 		99BBBB012ADFC0B200706D17 /* LabelAttributesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BBBB002ADFC0B200706D17 /* LabelAttributesViewController.swift */; };
@@ -44,6 +49,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		99758EF32B23B9ED00839F99 /* TextAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAnimation.swift; sourceTree = "<group>"; };
+		99758EF52B23BB7900839F99 /* WaveTextAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveTextAnimation.swift; sourceTree = "<group>"; };
+		99758EF72B23BBF300839F99 /* PopTextAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopTextAnimation.swift; sourceTree = "<group>"; };
+		99758EF92B23C5D300839F99 /* SpringOscillator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpringOscillator.swift; sourceTree = "<group>"; };
+		99758EFB2B242D3F00839F99 /* FloatTextAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatTextAnimation.swift; sourceTree = "<group>"; };
 		99BBBAF92ADFC0B200706D17 /* MaskingTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MaskingTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		99BBBAFC2ADFC0B200706D17 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		99BBBAFE2ADFC0B200706D17 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -160,6 +170,10 @@
 			isa = PBXGroup;
 			children = (
 				99D869752AFF48270013B6FE /* AnimatedLabel.swift */,
+				99758EF32B23B9ED00839F99 /* TextAnimation.swift */,
+				99758EF52B23BB7900839F99 /* WaveTextAnimation.swift */,
+				99758EF72B23BBF300839F99 /* PopTextAnimation.swift */,
+				99758EFB2B242D3F00839F99 /* FloatTextAnimation.swift */,
 			);
 			path = AnimationLabel;
 			sourceTree = "<group>";
@@ -200,6 +214,7 @@
 				99D869922B03119E0013B6FE /* PredictableRandomNumberGenerator.swift */,
 				99D869972B08584C0013B6FE /* PlaybackControlsView.swift */,
 				99D869992B0877500013B6FE /* Oscillator.swift */,
+				99758EF92B23C5D300839F99 /* SpringOscillator.swift */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -331,6 +346,8 @@
 				99BBBB012ADFC0B200706D17 /* LabelAttributesViewController.swift in Sources */,
 				99D8696C2AFF04370013B6FE /* FilterLabel.swift in Sources */,
 				99D869662AF845BE0013B6FE /* KLabelLayer.swift in Sources */,
+				99758EFC2B242D3F00839F99 /* FloatTextAnimation.swift in Sources */,
+				99758EFA2B23C5D300839F99 /* SpringOscillator.swift in Sources */,
 				99D869802AFF4DE60013B6FE /* StepperAndLabelView.swift in Sources */,
 				99BBBAFD2ADFC0B200706D17 /* AppDelegate.swift in Sources */,
 				99D869712AFF44410013B6FE /* FilterType.swift in Sources */,
@@ -338,10 +355,13 @@
 				99D8696F2AFF440A0013B6FE /* CIFilter+Blurs.swift in Sources */,
 				99D8697C2AFF4D410013B6FE /* FilterViewController.swift in Sources */,
 				99D869822B0032E50013B6FE /* SliderView.swift in Sources */,
+				99758EF42B23B9ED00839F99 /* TextAnimation.swift in Sources */,
 				99D869762AFF48270013B6FE /* AnimatedLabel.swift in Sources */,
 				99D869642AF83CA10013B6FE /* KLabel.swift in Sources */,
+				99758EF82B23BBF300839F99 /* PopTextAnimation.swift in Sources */,
 				99D869682AFD71790013B6FE /* FontSelectorViewController.swift in Sources */,
 				99D8697A2AFF4BF90013B6FE /* AnimatedLabelViewController.swift in Sources */,
+				99758EF62B23BB7900839F99 /* WaveTextAnimation.swift in Sources */,
 				99BBBAFF2ADFC0B200706D17 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

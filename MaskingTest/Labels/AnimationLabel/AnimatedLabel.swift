@@ -9,6 +9,24 @@ class AnimatedLabel: UILabel {
         }
     }
     
+//    private var textAnimation: TextAnimationProtocol = WaveTextAnimation(animationDuration: 60*2)
+//    private var textAnimation: TextAnimationProtocol = PopTextAnimation(animationDuration: 0.0)
+    private var textAnimation: TextAnimationProtocol = FloatTextAnimation(animationDuration: 0.0)
+    
+    var currentTime: TimeInterval = 0.0
+    
+    var animationDuration: TimeInterval = 0.0 {
+        didSet {
+            textAnimation.animationDuration = animationDuration
+        }
+    }
+    
+    var granularity: AnimationGranularity = .character {
+        didSet {
+            textAnimation.granularity = granularity
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -25,6 +43,8 @@ class AnimatedLabel: UILabel {
     
     override func drawText(in rect: CGRect) {
         
+        textAnimation.totalCharacters = text?.count ?? 0
+        textAnimation.totalWords = wordCount()
         drawEach(rect: rect)
         
 //        outerShadowLayer.path = outerPath
@@ -56,6 +76,12 @@ class AnimatedLabel: UILabel {
 
 extension AnimatedLabel {
     
+    func wordCount() -> Int {
+        let words = (text ?? "").components(separatedBy: .whitespacesAndNewlines)
+        let filteredWords = words.filter { !$0.isEmpty }
+        return filteredWords.count
+    }
+    
     func drawEach(rect: CGRect) {
         guard let attributedText = attributedText,
             let context = UIGraphicsGetCurrentContext() else { return }
@@ -66,8 +92,11 @@ extension AnimatedLabel {
         mut.addAttribute(.paragraphStyle, value: p, range: NSMakeRange(0, attributedText.length))
 
         context.textMatrix = .identity
+        context.move(to: CGPoint(x: 30, y: 30))
         context.translateBy(x: 0, y: bounds.size.height)
         context.scaleBy(x: 1.0, y: -1.0)
+        
+//        context.move(to: CGPoint(x: 0, y: 30))
         
         context.setLineJoin(.round)
 
@@ -81,108 +110,47 @@ extension AnimatedLabel {
         let ctFrameYOffset: CGFloat = (rect.height / 2) - (ctFrameHeight / 2)
         var currentLineYOffset: CGFloat = ctFrameYOffset
 
-        for line in lines {
+        context.saveGState()
+        let frameStartPoint = (rect.height - ctFrameHeight)/2
+        context.translateBy(x: 0, y: rect.height - frameStartPoint)
+        var fullCharacterIndex = 0
+        var wordIndex = 0
+        var isPreviousCharacterSpaceOrNewLine = false
+        var characterInWordIndex = 0
+        var mutableWordPath = CGMutablePath()
+        var mutableWordPathY = rect.height - frameStartPoint
+        var mutableWordPathX = 0.0
+        for (lineIndex, line) in lines.enumerated() {
             let glyphRuns = CTLineGetGlyphRuns(line) as! [CTRun]
             let linebounds = CTLineGetBoundsWithOptions(line, [])
             let lineWidth = linebounds.width
+            let lineHeight = ctLineHeight(ctLine: line)
             
             let mutableStrokePath = lineCGPath(ctLine: line)
-//
-//            let boundingBox = CTLineGetBoundsWithOptions(line, .useGlyphPathBounds)
-//            let offset = 10.0
-//            let largerSquare = CGRect(x: boundingBox.origin.x - offset,
-//                                      y: boundingBox.origin.y - offset,
-//                                      width: boundingBox.size.width + offset*2.0,
-//                                      height: boundingBox.size.height + offset*2.0)
-//            
-//            let squarePath = CGPath(rect: largerSquare, transform: nil)
-            
-//            if let neonOutlineRadius {
-//                var outlineRadii: [Double] = []
-////                let colors: [UIColor] = [.yellow, .systemPink, .systemPink, .systemPink, .systemPink, .systemPink, .systemPink, .systemPink, .systemPink]
-//                var cur = neonOutlineRadius
-//                while cur > 0 {
-//                    outlineRadii.append(cur)
-//                    cur -= 13
-//                }
-                
-//                for (i, rad) in outlineRadii.enumerated() {
-//                    context.saveGState()
-//                    context.addPath(mutableStrokePath.outline(radius: rad))
-//                    let color = i == 0 ? UIColor.yellow.cgColor : UIColor.systemPink.cgColor
-//                    context.setShadow(offset: .zero, blur: 6.0, color: color)
-//                    context.setLineWidth(1)
-////                    context.setBlendMode(.colorDodge)
-//                    context.setStrokeColor(color)
-//                    context.strokePath()
-//                    context.restoreGState()
-//                }
-//                self.outerPath = mutableStrokePath.outline(radius: neonOutlineRadius)
-//                for (i, rad) in outlineRadii.enumerated() {
-//                    context.saveGState()
-//                    context.addPath(mutableStrokePath.outline(radius: rad))
-//                    let color = i == 0 ? UIColor.yellow.cgColor : UIColor.systemPink.cgColor
-//                    context.setShadow(offset: CGSize(width: 0, height: 0), blur: 4.0, color: color)
-//                    
-//                    context.setLineWidth(1.7)
-//                    context.setLineDash(phase: rad*rad, lengths: [40,40])
-//                    
-//                    context.setStrokeColor(color)
-//                    context.strokePath()
-//                    context.restoreGState()
-//                }
-//                for (i, rad) in outlineRadii.enumerated() {
-//                    context.saveGState()
-//                    context.addPath(mutableStrokePath.outline(radius: rad))
-//                    let color = i == 0 ? UIColor.yellow.cgColor : UIColor.systemPink.cgColor
-//                    context.setShadow(offset: .zero, blur: 4.0, color: color)
-//                    context.setLineWidth(1)
-//                    context.setBlendMode(.multiply)
-////                    context.setLineDash(phase: rad*rad, lengths: [20,40])
-//                    
-//                    context.setStrokeColor(color)
-//                    context.strokePath()
-//                    context.restoreGState()
-//                }
-//                for (i, rad) in outlineRadii.enumerated() {
-//                    context.saveGState()
-//                    context.addPath(mutableStrokePath.outline(radius: rad))
-//                    let color = i == 0 ? UIColor.yellow.cgColor : UIColor.systemPink.cgColor
-////                    context.setShadow(offset: .zero, blur: 4.0, color: color)
-//                    context.setLineWidth(1)
-////                    context.setBlendMode(.multiply)
-////                    context.setLineDash(phase: rad*rad, lengths: [20,40])
-//                    
-//                    context.setStrokeColor(color)
-//                    context.strokePath()
-//                    context.restoreGState()
-//                }
-//            }
-            
-            context.saveGState()
-            
-            context.addPath(mutableStrokePath)
-            context.setFillColor(UIColor.white.cgColor)
-            context.setShadow(offset: .zero, blur: 20, color: UIColor.white.cgColor)
-            context.fillPath()
-            
-            context.restoreGState()
             
             var entireCGPath = CGMutablePath()
+            var prevX: CGFloat = 0.0
+            let textCenter = rect.height/2
+//                let totalTextHeight
+            
+            context.translateBy(x: 0, y: -lineHeight)
+            mutableWordPathY -= lineHeight
+            context.saveGState()
             for run in glyphRuns {
                 let glyphCount = CTRunGetGlyphCount(run)
-                context.saveGState()
+//                context.saveGState()
                 
                 context.apply(attributes: CTRunGetAttributes(run) as! [NSAttributedString.Key : Any])
                 let paragraphStyle = CTRunGetAttributes(run) as? [NSAttributedString.Key: Any]
                 let alignment = (paragraphStyle?[.paragraphStyle] as? NSParagraphStyle)?.alignment ?? .left
                 
-                defer {
-                    context.restoreGState()
-                }
-
-                for i in 0..<glyphCount {
-                    let glyphRange = CFRangeMake(i, 1)
+//                defer {
+//                    context.restoreGState()
+//                }
+                var str = ""
+                var timesDrawn = 0
+                for glyphIndex in 0..<glyphCount {
+                    let glyphRange = CFRangeMake(glyphIndex, 1)
                     var glyphPosition = CGPoint.zero
                     CTRunGetPositions(run, glyphRange, &glyphPosition)
 
@@ -207,39 +175,150 @@ extension AnimatedLabel {
                     let glyphX = CTLineGetOffsetForStringIndex(line, CTRunGetStringRange(run).location, nil) + glyphPosition.x + alignmentOffset
                     let glyphY = rect.height - currentLineYOffset - glyphAscent
                     
-                    if let glyph = CTRunGetGlyphsPtr(run)?[i] {
-                        
-//                        context.textPosition = CGPoint(x: glyphX, y: glyphY)
-                        
+                    if characterInWordIndex == 0 {
+                        mutableWordPathX = glyphX
+                        if granularity == .word {
+//                            prevX = glyphX
+                        }
+                    }
+                    
+                    if let glyph = CTRunGetGlyphsPtr(run)?[glyphIndex] {
                         var runFont: CTFont?
                         if let attributes = CTRunGetAttributes(run) as? [NSAttributedString.Key: Any] {
                             if let font = attributes[.font] {
                                 runFont = (font as! CTFont)
                             }
+                            context.apply(attributes: attributes)
+                        }
+                        if let s = stringFromGlyph(glyph, font: runFont!) {
+                            str.append(s)
                         }
                         if let runFont, let cgPath = CTFontCreatePathForGlyph(runFont, glyph, nil) {
-//                            print("cgPath: \(cgPath)")
-//                            let strokedPath = CGPathCreateCopyByStrokingPath(originalPath, nil, strokeWidth, .butt, .miter, 10.0)
-//                            var transform = CGAffineTransform.identity
-//                            let strokedPath = cgPath.copy(strokingWithWidth: 4.0, lineCap: .butt, lineJoin: .round, miterLimit: 10)
+                            switch granularity {
+                            case .character:
+                                context.setFillColor(UIColor.white.cgColor)
+                                let characterWidth = CTFontGetAdvancesForGlyphs(runFont, .horizontal, [glyph], nil, 1)
+                                var boundingBox = CGRect.zero
+                                CTFontGetBoundingRectsForGlyphs(font, .default, [glyph], &boundingBox, 1)
+                                let characterHeight = boundingBox.height
+                                context.translateBy(x: glyphX - prevX, y: 0)
+                                prevX = glyphX
+                                context.saveGState()
+                                let translation = textAnimation.translation(playbackTime: currentTime, characterIndex: fullCharacterIndex, wordIndex: wordIndex, characterIndexInWord: characterInWordIndex)
+                                let characterTransform = textAnimation.characterTransform(playbackTime: currentTime, characterIndex: fullCharacterIndex, wordIndex: wordIndex, characterIndexInWord: characterInWordIndex, characterWidth: characterWidth, characterHeight: characterHeight)
+                                context.translateBy(x: translation.x, y: translation.y)
+                                context.concatenate(characterTransform)
+                                let opacity = textAnimation.opacity(playbackTime: currentTime, characterIndex: fullCharacterIndex, wordIndex: wordIndex, characterIndexInWord: characterInWordIndex)
+                                context.setAlpha(opacity)
+                                context.addPath(cgPath)
+                                context.fillPath()
+                                context.restoreGState()
+                                isPreviousCharacterSpaceOrNewLine = false
+                            case .word:
+//                                context.setFillColor(UIColor.white.cgColor)
+//                                context.translateBy(x: glyphX - prevX, y: 0)
+//                                prevX = glyphX
+//                                context.saveGState()
+//                                let translation = waveAnimation.translation(playbackTime: currentTime, characterIndex: fullCharacterIndex, wordIndex: wordIndex, characterIndexInWord: characterInWordIndex)
+//                                context.translateBy(x: translation.x, y: translation.y)
+//                                context.addPath(cgPath)
+//                                context.fillPath()
+//                                context.restoreGState()
+//                                characterInWordIndex += 1
+//                                isPreviousCharacterSpaceOrNewLine = false
+//                                if characterInWordIndex == 0 {
+//                                    mutableWordPath.move(to: CGPoint(x: glyphX, y: 0))
+//                                }
+//                                mutableWordPath.move(to: CGPoint(x: 30*glyphIndex, y: 0))
+                                let characterWidth = CTFontGetAdvancesForGlyphs(runFont, .horizontal, [glyph], nil, 1)
+                                let trans = CGAffineTransform(translationX: characterInWordIndex == 0 ? 0 : prevX, y: 0)
+                                prevX += characterWidth
+                                mutableWordPath.addPath(cgPath, transform: trans)
+                                isPreviousCharacterSpaceOrNewLine = false
+                            case .full:
+                                context.setFillColor(UIColor.white.cgColor)
+                                context.translateBy(x: glyphX - prevX, y: 0)
+                                prevX = glyphX
+                                context.saveGState()
+                                let translation = textAnimation.translation(playbackTime: currentTime, characterIndex: fullCharacterIndex, wordIndex: wordIndex, characterIndexInWord: characterInWordIndex)
+                                context.translateBy(x: translation.x, y: translation.y)
+                                context.addPath(cgPath)
+                                context.fillPath()
+                                context.restoreGState()
+                                characterInWordIndex += 1
+                                isPreviousCharacterSpaceOrNewLine = false
+                            }
+                            characterInWordIndex += 1
+                        } else {
+                            // this is a space
+                            if !isPreviousCharacterSpaceOrNewLine {
+                                switch granularity {
+                                case .character:
+                                    break
+                                case .word:
+                                    context.saveGState()
+                                    context.translateBy(x: mutableWordPathX, y: 0)
+                                    let translation = textAnimation.translation(playbackTime: currentTime, characterIndex: fullCharacterIndex, wordIndex: wordIndex, characterIndexInWord: characterInWordIndex)
+//                                    context.translateBy(x: translation.x, y: translation.y)
+                                    
+                                    let wordTransform = textAnimation.wordTransform(playbackTime: currentTime, wordIndex: wordIndex, characterWidth: mutableWordPath.boundingBox.width, characterHeight: mutableWordPath.boundingBox.height)
+                                    context.concatenate(wordTransform)
+                                    
+                                    context.setFillColor(UIColor.white.cgColor)
+//                                    print("((( going to draw path: \(mutableWordPath)")
+                                    context.addPath(mutableWordPath.copy()!)
+                                    context.fillPath()
+                                    context.restoreGState()
+                                    timesDrawn += 1
+                                    mutableWordPath = CGMutablePath()
+                                    prevX = 0
+                                case .full:
+                                    break
+                                }
+                                wordIndex += 1
+                                characterInWordIndex = 0
+                                isPreviousCharacterSpaceOrNewLine = true
+                                str = ""
+                            } else {
+                                print("double space")
+                            }// if !isPreviousCharacterSpaceOrNewLine {
+                        }// if let runFont, let cgPath = CTFontCreatePathForGlyph(runFont, glyph, nil) {
+                        
+                        if glyphIndex == glyphCount - 1 {
+                            context.translateBy(x: mutableWordPathX, y: 0)
+                            context.saveGState()
+                            let translation = textAnimation.translation(playbackTime: currentTime, characterIndex: fullCharacterIndex, wordIndex: wordIndex, characterIndexInWord: characterInWordIndex)
+//                                    context.translateBy(x: translation.x, y: translation.y)
                             
-//                            closure(cgPath)
-//                            context.move(to: CGPoint(x: glyphX, y: glyphY))
-//                            context.translateBy(x: glyphX, y: glyphY)
-//                            context.saveGState()
-//                            context.move(to: CGPoint(x: glyphX, y: glyphY))
-//                            context.addPath(cgPath)
-//                            context.drawPath(using: .fill)
-//                            context.restoreGState()
+                            let wordTransform = textAnimation.wordTransform(playbackTime: currentTime, wordIndex: wordIndex, characterWidth: mutableWordPath.boundingBox.width, characterHeight: mutableWordPath.boundingBox.height)
+                            context.concatenate(wordTransform)
+                            
+                            context.setFillColor(UIColor.white.cgColor)
+//                            print("((( going to draw path: \(mutableWordPath)")
+                            context.addPath(mutableWordPath.copy()!)
+                            context.fillPath()
+                            context.restoreGState()
+                            timesDrawn += 1
+                            mutableWordPath = CGMutablePath()
+                            prevX = 0
+                            wordIndex += 1
                         }
                         
-                        
 //                        context.move(to: CGPoint(x: glyphX, y: glyphY))
-                    }
-                }
-            }
+                        fullCharacterIndex += 1
+                    } else {
+                        print("no glyph $%^UI")
+                    }// if glyph
+                } // for glyphIndex in 0..<glyphCount {
+//                print("times drawn: \(timesDrawn)")
+            } // for run in glyphRuns {
+            wordIndex = 0
+            context.restoreGState()
+            prevX = 0.0
             currentLineYOffset += ctLineHeight(ctLine: line)
-        }
+        } // for (lineIndex, line) in lines.enumerated() {
+        
+        context.restoreGState()
     }
     
     
@@ -262,6 +341,18 @@ extension AnimatedLabel {
         CTLineGetTypographicBounds(ctLine, &ascent, &descent, &leading)
 
         return ascent + descent + leading
+    }
+    
+    func isSpaceOrNewline(for glyph: CGGlyph, in font: CTFont) -> Bool {
+        let characters = UnsafeMutablePointer<UniChar>.allocate(capacity: 1)
+        var glyphs = [glyph]
+        
+        CTFontGetGlyphsForCharacters(font, characters, &glyphs, 1)
+        
+        let unicodeScalar = UnicodeScalar(characters.pointee)
+        characters.deallocate()
+        
+        return unicodeScalar == " " || unicodeScalar == "\n"
     }
     
     func lineCGPath(ctLine: CTLine) -> CGMutablePath {
@@ -297,6 +388,20 @@ extension AnimatedLabel {
             }
         }
         return combinedPath
+    }
+    
+    
+    func stringFromGlyph(_ glyph: CGGlyph, font: CTFont) -> String? {
+        // Create a Glyph array containing the single glyph
+        let glyphs = [glyph]
+
+        // Retrieve the corresponding character indices
+        var characters = [UniChar](repeating: 0, count: glyphs.count)
+        CTFontGetGlyphsForCharacters(font, glyphs, &characters, glyphs.count)
+
+        // Convert the character indices to a string
+        let string = String(utf16CodeUnits: characters, count: characters.count)
+        return string
     }
     
 }
@@ -390,7 +495,6 @@ private extension CGContext {
         }
     }
 }
-
 
 //extension CGContext {
 //    func loop(text: String?, font: CTFont, closure: (_ cgPath: CGPath) -> Void) {
